@@ -13,7 +13,7 @@ const Home: NextPage = () => {
       </Head>
 
       <h1>Bem vindo!</h1>
-      <Card />
+      <Card title={"Teste para deploy automatico"} />
     </div>
   )
 }
