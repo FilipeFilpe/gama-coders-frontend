@@ -1,13 +1,24 @@
+import { useState } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { Button, Container, Grid } from '@material-ui/core'
 
 import InfoCard from '../components/cards/InfoCard'
-import { useState } from 'react'
-import Modal from '../components/Modal'
+import Modal from '../components/modals/Modal'
+import Chart from '../components/charts/Chart'
+import TransactionForm from '../components/forms/TransactionForm'
+import Table from '../components/tables/Table'
 
+const data = [
+  { argument: 1, value: 5 },
+  { argument: 2, value: 2 },
+  { argument: 3, value: 5 },
+  { argument: 4, value: 5 },
+  { argument: 5, value: 8 },
+];
 const Home: NextPage = () => {
   const [openForm, setOpenForm] = useState(false)
+
   return (
     <Container>
       <Head>
@@ -25,6 +36,7 @@ const Home: NextPage = () => {
           <h1>Bem vindo!</h1>
         </Grid>
         <Grid
+          container
           item
           xs={4}
           justifyContent="flex-end"
@@ -32,7 +44,7 @@ const Home: NextPage = () => {
           <Button
             variant="contained"
             size="large"
-            style={{background: 'var(--bg-primary)'}}
+            style={{ background: 'var(--bg-primary)', color: 'white' }}
             onClick={() => setOpenForm(!openForm)}
           >
             Nova Transação
@@ -68,12 +80,23 @@ const Home: NextPage = () => {
             type="warning"
           />
         </Grid>
+
+        <Grid item xs={6}>
+          <Chart data={data} />
+        </Grid>
+
+        <Grid item xs={6}>
+          <Table />
+        </Grid>
       </Grid>
 
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <Modal open={openForm}>
-            <h1>Nova Transação</h1>
+          <Modal
+            title="Nova Transação"
+            open={openForm}
+          >
+            <TransactionForm setOpenForm={setOpenForm}/>
           </Modal>
         </Grid>
       </Grid>

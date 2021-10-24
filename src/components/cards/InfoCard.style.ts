@@ -8,15 +8,12 @@ const CardStyles = createStyles({
         borderRadius: 10,
         boxShadow: '5px 5px 10px 0px #d1d1d1',
         color: 'white',
-        padding: '0 1rem'
-    },
-    title: {
-        color: 'white'
+        padding: '0 1rem',
+        '& > *': {color: 'white'}
     },
     value: {
         width: '100%',
-        textAlign: 'end',
-        color: 'white'
+        textAlign: 'end'
     }
 })
 

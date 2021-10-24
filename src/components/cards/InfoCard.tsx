@@ -14,7 +14,7 @@ export default function InfoCard(props: InfoCardProps) {
     return (
         <Card className={classes.root} style={{background: `var(--bg-${props.type ?? 'default'})`}}>
             <CardContent>
-                <Typography className={classes.title} variant="h6">
+                <Typography variant="h6">
                     { props.title }
                 </Typography>
                 <Typography
