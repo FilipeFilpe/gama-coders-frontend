@@ -1,38 +1,47 @@
 import { IconButton } from '@material-ui/core';
 import { DeleteRounded as DeleteBtn, EditRounded as EditBtn  } from '@material-ui/icons';
-import { DataGrid, GridCellParams, GridColDef, GridValueGetterParams } from '@material-ui/data-grid';
+import { DataGrid, GridCellParams, GridColDef } from '@material-ui/data-grid';
 
 const columns: GridColDef[] = [
     {
         field: 'data',
         headerName: 'Data',
-        width: 130
+        width: 200,
+        headerAlign: 'center'
     },
     {
         field: 'cotacao',
         headerName: 'Cotação',
-        width: 150
+        width: 200,
+        align: 'right',
+        headerAlign: 'center'
     },
     {
         field: 'compra',
         headerName: 'Compra',
-        width: 150
+        width: 200,
+        align: 'right',
+        headerAlign: 'center'
     },
     {
         field: 'total',
         headerName: 'Total',
-        width: 110
+        width: 150,
+        align: 'right',
+        headerAlign: 'center'
     },
     {
         field: 'acoes',
         headerName: 'Ações',
-        width: 110,
+        width: 150,
+        align: 'center',
+        headerAlign: 'center',
         renderCell: (params: GridCellParams) => {
             return <>
-                <IconButton aria-label="edit">
+                <IconButton aria-label="edit" onClick={() => console.log(params)}>
                     <EditBtn color="primary" />
                 </IconButton>
-                <IconButton aria-label="delete">
+                <IconButton aria-label="delete" onClick={() => console.log(params)}>
                     <DeleteBtn color="error" />
                 </IconButton>
             </>
@@ -56,6 +65,7 @@ export default function Table() {
             rows={rows}
             columns={columns}
             pageSize={15}
+            autoHeight
         />
     );
 }

@@ -81,11 +81,11 @@ const Home: NextPage = () => {
           />
         </Grid>
 
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <Chart data={data} />
         </Grid>
 
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <Table />
         </Grid>
       </Grid>
