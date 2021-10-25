@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { Button, Divider, Grid, TextField } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
+import styles from './TransactionForm.style'
 
 interface TransactionFormProps {
-    defaultValues?: {}
+    defaultValues?: TransactionValue
     setOpenForm: (balue: boolean) => void
 }
 interface TransactionValue {
@@ -10,8 +12,18 @@ interface TransactionValue {
     valor?: number
     quantidade?: number
 }
+const useStyles = makeStyles(styles)
+
 export default function TransactionForm(props: TransactionFormProps) {
-    const [formValues, setFormValues] = useState<TransactionValue>({})
+    const classes = useStyles();
+    const emptyTransaction = {
+        data: new Date(),
+        valor: 0,
+        quantidade: 0
+    }
+
+    const [formValues, setFormValues] = useState<TransactionValue>(emptyTransaction)
+    const [total, setTotal] =  useState<Number>(0)
 
     const changeValues = (event: any) => {
         setFormValues({...formValues, [event.target.name]: event.target.value})
@@ -35,8 +47,14 @@ export default function TransactionForm(props: TransactionFormProps) {
         }
     }, [props.defaultValues])
 
+    useEffect(() => {
+        if (formValues?.quantidade && formValues?.valor) {
+            setTotal(formValues.quantidade * formValues.valor)
+        }
+    }, [formValues.quantidade, formValues.valor])
+
     return (
-        <Grid container spacing={3}>
+        <Grid container spacing={3} className={classes.root}>
             <Grid item xs={6}>
                 <TextField
                     autoFocus
@@ -84,25 +102,10 @@ export default function TransactionForm(props: TransactionFormProps) {
 
             <Divider />
             
-            <div style={{
-                width: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'column',
-                padding: '1rem'
-            }}
-            >
-                <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexDirection: 'column',
-                        padding: '1rem'
-                    }}
-                >
+            <div className={classes.totalContainer} >
+                <div className={classes.total}>
                     <span>Total</span>
-                    <span>R$ 575,55</span>
+                    <span>R$ {total}</span>
                 </div>
             </div>
 

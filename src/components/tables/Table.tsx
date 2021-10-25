@@ -3,7 +3,6 @@ import { DeleteRounded as DeleteBtn, EditRounded as EditBtn  } from '@material-u
 import { DataGrid, GridCellParams, GridColDef } from '@material-ui/data-grid';
 import { useRouter } from 'next/dist/client/router';
 
-
 interface TableInterface {
     values: [],
     editCallback?: () => void
@@ -51,6 +50,7 @@ export default function Table(props: TableInterface) {
             rows={props.values ?? []}
             columns={columns}
             pageSize={15}
+            autoHeight
         />
     );
 }
