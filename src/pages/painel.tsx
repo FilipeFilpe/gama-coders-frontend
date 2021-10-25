@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { Button, Container, Grid } from '@material-ui/core'
@@ -8,16 +8,67 @@ import Modal from '../components/modals/Modal'
 import Chart from '../components/charts/Chart'
 import TransactionForm from '../components/forms/TransactionForm'
 import Table from '../components/tables/Table'
+import apiBtc, { apiCotation } from '../services/apiBtc'
 
-const data = [
+const dataChart = [
   { argument: 1, value: 5 },
   { argument: 2, value: 2 },
   { argument: 3, value: 5 },
   { argument: 4, value: 5 },
   { argument: 5, value: 8 },
 ];
+interface TransactionResponseInterface {
+  id?: number
+  quantity?: number
+  transaction_date?: string
+  userId?: number
+  value_buy?: number
+  crypto_type?: string
+}
 const Home: NextPage = () => {
   const [openForm, setOpenForm] = useState(false)
+  const [transactions, setTransactions] = useState([])
+  const [cotation, setCotation] = useState(0)
+  const [total, setTotal] = useState(0)
+  const [dataForm, setDataForm] = useState(null)
+
+  const getTransactions = async () => {
+    await apiBtc.get('/transaction')
+      .then(response => {
+        const data: TransactionResponseInterface[] = response.data?.map((transaction: any) => ({
+          id: transaction.id,
+          data: transaction.transaction_date,
+          cotacao: transaction.value_buy,
+          compra: transaction.quantity * transaction.value_buy,
+          total: transaction.quantity
+        }))
+
+        const total = data.reduce((acc, act) => acc + act.compra, 0)
+        setTotal(total.toFixed(2))        
+        
+        setTransactions(data)
+      })
+  }
+  const getCotation = async () => {
+    const params = {
+      ids: 'bitcoin',
+      vs_currencies: 'brl'
+    }
+    await apiCotation.get('/price', {params})
+      .then(response => {
+        setCotation(response.data[params.ids].brl)
+      })
+  }
+
+  const handleEdit = (data) => {
+    setDataForm(data)
+    setOpenForm(true)   
+  }
+
+  useEffect(() => {
+    getTransactions()
+    getCotation()
+  }, [])
 
   return (
     <Container>
@@ -55,7 +106,7 @@ const Home: NextPage = () => {
         <Grid item xs={3}>
           <InfoCard
             title="Total Investido"
-            value="R$ 11.501,55"
+            value={total}
             type="error"
           />
         </Grid>
@@ -76,17 +127,20 @@ const Home: NextPage = () => {
         <Grid item xs={3}>
           <InfoCard
             title="Cotação Atual"
-            value="R$ 346.589,37"
+            value={cotation}
             type="warning"
           />
         </Grid>
 
         <Grid item xs={6}>
-          <Chart data={data} />
+          <Chart data={dataChart} />
         </Grid>
 
         <Grid item xs={6}>
-          <Table />
+          <Table
+            values={transactions}
+            editCallback={handleEdit}
+          />
         </Grid>
       </Grid>
 
@@ -96,7 +150,7 @@ const Home: NextPage = () => {
             title="Nova Transação"
             open={openForm}
           >
-            <TransactionForm setOpenForm={setOpenForm}/>
+            <TransactionForm setOpenForm={setOpenForm} defaultValues={dataForm} />
           </Modal>
         </Grid>
       </Grid>

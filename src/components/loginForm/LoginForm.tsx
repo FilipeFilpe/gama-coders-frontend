@@ -5,11 +5,13 @@ import { makeStyles } from '@material-ui/styles'
 import LoginFormStyles from './LoginForm.style'
 import Modal from '../modals/Modal'
 import RegisterForm from '../registerForm/RegisterForm'
+import { useRouter } from 'next/dist/client/router';
 
 const useStyles = makeStyles(LoginFormStyles)
 
 export const LoginForm = () => {
   const classes = useStyles()
+  const router = useRouter()
   const [ email, setEmail] = useState('')
   const [ password, setPassword] = useState('')
   const [ openForm, setOpenForm ] = useState(false)
@@ -25,8 +27,8 @@ export const LoginForm = () => {
     }
   }
 
-  function handleSubmit(values: string) {
-    //TO DO
+  function handleSubmit() {
+    router.push('/painel')
   }
 
   return (
@@ -67,6 +69,7 @@ export const LoginForm = () => {
               variant="contained"
               color="secondary"
               style={{background: 'var(--bg-primary)', width:'40%', marginTop: '1rem'}}
+              onClick={handleSubmit}
             >
               Entrar
             </Button>

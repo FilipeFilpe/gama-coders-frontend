@@ -9,7 +9,6 @@ interface TransactionValue {
     data?: Date
     valor?: number
     quantidade?: number
-
 }
 export default function TransactionForm(props: TransactionFormProps) {
     const [formValues, setFormValues] = useState<TransactionValue>({})
@@ -26,10 +25,13 @@ export default function TransactionForm(props: TransactionFormProps) {
     }
 
     useEffect(() => {
-        console.log('props',props?.defaultValues);
-        
         if (Object.keys(props.defaultValues ?? {}).length > 0) {
-            setFormValues(props?.defaultValues ?? {})
+            const transaction: TransactionValue = {
+                data: props?.defaultValues?.data.replace('.000Z', ''),
+                valor: props?.defaultValues?.cotacao,
+                quantidade: props?.defaultValues?.total
+            }            
+            setFormValues(transaction)
         }
     }, [props.defaultValues])
 
