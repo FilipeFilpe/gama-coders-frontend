@@ -3,13 +3,16 @@ import { useState } from 'react';
 import { Box, TextField, Button, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import LoginFormStyles from './LoginForm.style'
+import Modal from '../modals/Modal'
+import RegisterForm from '../registerForm/RegisterForm'
 
 const useStyles = makeStyles(LoginFormStyles)
 
 export const LoginForm = () => {
   const classes = useStyles()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [ email, setEmail] = useState('')
+  const [ password, setPassword] = useState('')
+  const [ openForm, setOpenForm ] = useState(false)
 
   function handleChange(event: any): void{
     const targetName = event.target.name
@@ -23,7 +26,7 @@ export const LoginForm = () => {
   }
 
   function handleSubmit(values: string) {
-
+    //TO DO
   }
 
   return (
@@ -69,8 +72,18 @@ export const LoginForm = () => {
             </Button>
           </Box>
           <Box className={classes.root}>
-            <Typography variant='h6' style={{marginBottom: '1rem'}}>Ainda não tem conta? Clique <a onClick={() => console.log('abre modal?')}>Aqui</a> e crie agora mesmo!</Typography>
+            <Typography variant='h6' style={{marginBottom: '1rem'}}>Ainda não tem conta? Clique <a className={classes.click} onClick={() => setOpenForm(!openForm)}>Aqui</a> e crie agora mesmo!</Typography>
           </Box>
+          <Grid container>
+            <Grid item xs={12}>
+              <Modal
+                title="Cadastrar usuário"
+                open={openForm}
+              >
+                <RegisterForm />
+              </Modal>
+            </Grid>
+          </Grid>
         </Grid>
     </Grid>
   )
