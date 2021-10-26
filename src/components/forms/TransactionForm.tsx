@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Divider, Grid, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import styles from './TransactionForm.style'
+import apiBtc from "../../services/apiBtc";
 
 interface TransactionFormProps {
     defaultValues?: TransactionValue
@@ -32,8 +33,14 @@ export default function TransactionForm(props: TransactionFormProps) {
         console.log('Buscando cotação', event.target.value);
     }
     
-    const handleSubmit = () => {
-        console.log(formValues);
+    const handleSubmit = async () => {
+        const dataToSave = {
+            transaction_date: formValues.data,
+            quantity: formValues.quantidade,
+            value_buy: formValues.valor
+        }
+        const {id} = props.defaultValues
+        await apiBtc[!!id ? 'put' : 'post'](`/transaction${!!id ? '/'+id: ''}`, dataToSave)
     }
 
     useEffect(() => {

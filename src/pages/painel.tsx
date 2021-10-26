@@ -9,27 +9,21 @@ import Chart from '../components/charts/Chart'
 import TransactionForm from '../components/forms/TransactionForm'
 import Table from '../components/tables/Table'
 import apiBtc, { apiCotation } from '../services/apiBtc'
+import { convertCurrent, dateFormatter } from '../uteis/helpers'
 
-const dataChart = [
-  { argument: 1, value: 5 },
-  { argument: 2, value: 2 },
-  { argument: 3, value: 5 },
-  { argument: 4, value: 5 },
-  { argument: 5, value: 8 },
-];
 interface TransactionResponseInterface {
   id?: number
-  quantity?: number
-  transaction_date?: string
-  userId?: number
-  value_buy?: number
-  crypto_type?: string
+  data?: string
+  cotacao?: number
+  compra?: number
+  total?: string
 }
+
 const Home: NextPage = () => {
   const [openForm, setOpenForm] = useState(false)
   const [transactions, setTransactions] = useState([])
   const [cotation, setCotation] = useState(0)
-  const [total, setTotal] = useState(0)
+  const [total, setTotal] = useState('')
   const [dataForm, setDataForm] = useState(null)
 
   const getTransactions = async () => {
@@ -38,13 +32,13 @@ const Home: NextPage = () => {
         const data: TransactionResponseInterface[] = response.data?.map((transaction: any) => ({
           id: transaction.id,
           data: transaction.transaction_date,
-          cotacao: transaction.value_buy,
-          compra: transaction.quantity * transaction.value_buy,
-          total: transaction.quantity
+          cotacao: +transaction.value_buy,
+          compra: transaction.quantity + ' BTC',
+          total: transaction.quantity * transaction.value_buy
         }))
 
-        const total = data.reduce((acc, act) => acc + act.compra, 0)
-        setTotal(total.toFixed(2))        
+        const total = data.reduce((acc, act) => acc + act.total, 0)
+        setTotal(convertCurrent(+total.toFixed(2)))
         
         setTransactions(data)
       })
@@ -56,7 +50,14 @@ const Home: NextPage = () => {
     }
     await apiCotation.get('/price', {params})
       .then(response => {
-        setCotation(response.data[params.ids].brl)
+        setCotation(convertCurrent(response.data[params.ids].brl))
+      })
+  }
+
+  const handleDelete = async (data) => {
+    await apiBtc.delete(`/transaction/${data.id}`)
+      .then(response => {
+        getTransactions()
       })
   }
 
@@ -131,15 +132,19 @@ const Home: NextPage = () => {
             type="warning"
           />
         </Grid>
-
-        <Grid item xs={6}>
-          <Chart data={dataChart} />
+        <Grid item xs={8}>
+          <Chart
+            data={ transactions.map(transaction => {             
+                return { argument: dateFormatter(transaction.data), value: convertCurrent(transaction.total) }
+            })}
+          />
         </Grid>
 
-        <Grid item xs={6}>
+        <Grid item xs={10}>
           <Table
             values={transactions}
             editCallback={handleEdit}
+            deleteCallback={handleDelete}
           />
         </Grid>
       </Grid>
