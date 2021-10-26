@@ -7,11 +7,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import InfoCard from '../components/cards/InfoCard'
 import Modal from '../components/modals/Modal'
-import Chart from '../components/charts/Chart'
 import TransactionForm from '../components/forms/TransactionForm'
 import Table from '../components/tables/Table'
 import apiBtc, { apiCotation } from '../services/apiBtc'
-import { convertCurrent, dateFormatter } from '../uteis/helpers'
+import { convertCurrent } from '../uteis/helpers'
 import useLoading from '../hook/useLoading';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -96,7 +95,6 @@ const Home: NextPage = () => {
   useEffect(() => {
     getCotation()
   }, [])
-console.log('loading',loading);
 
   return (
     <Container>
