@@ -12,7 +12,7 @@ interface TransactionFormProps {
 }
 interface TransactionValue {
     id?: number
-    data?: Date
+    data?: Date | any
     cotacao?: number
     quantidade?: number
 }
@@ -75,7 +75,7 @@ export default function TransactionForm(props: TransactionFormProps) {
     useEffect(() => {
         if (Object.keys(props.defaultValues ?? {}).length > 0) {
             const transaction: TransactionValue = {
-                data: props?.defaultValues?.data ? props?.defaultValues?.data.replace('.000Z', '') : null,
+                data: typeof props?.defaultValues?.data === 'string' ? props?.defaultValues?.data.replace('.000Z', '') : null,
                 cotacao: props?.defaultValues?.cotacao,
                 quantidade: props?.defaultValues?.quantidade
             }            

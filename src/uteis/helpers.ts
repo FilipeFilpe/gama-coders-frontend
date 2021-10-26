@@ -1,4 +1,4 @@
-export const convertCurrent = f => {
+export const convertCurrent = (f: any) => {
     return f.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
 }
 
