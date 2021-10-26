@@ -5,7 +5,7 @@ const apiBtc = axios.create({
 });
 
 export const apiCotation = axios.create({
-    baseURL: 'https://api.coingecko.com/api/v3/simple'
+    baseURL: 'https://api.coingecko.com/api/v3'
 });
 
 export default apiBtc;

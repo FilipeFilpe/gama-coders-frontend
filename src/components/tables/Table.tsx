@@ -4,16 +4,16 @@ import { DataGrid, GridCellParams, GridColDef } from '@material-ui/data-grid';
 import { convertCurrent, dateFormatter } from '../../uteis/helpers';
 
 interface TableInterface {
-    values: [],
-    editCallback?: () => void,
-    deleteCallback?: () => void
+    values?: object[],
+    editCallback?: (data: any) => void,
+    deleteCallback?: (data: any) => void
 }
 export default function Table(props: TableInterface) {
     const columns: GridColDef[] = [
         {
             field: 'data',
             headerName: 'Data',
-            width: 150,
+            width: 200,
             renderCell: (params: GridCellParams) => {
                 if(!params.row.data) return ''
                 return <>{dateFormatter(params.row.data)}</>
@@ -22,33 +22,38 @@ export default function Table(props: TableInterface) {
         {
             field: 'cotacao',
             headerName: 'Cotação',
-            width: 150,
+            width: 200,
             align: 'right',
+            headerAlign: 'right',
             renderCell: (params: GridCellParams) => <>{convertCurrent(params.row.cotacao)}</>
         },
         {
             field: 'compra',
             headerName: 'Compra',
-            width: 150,
-            align: 'right'
+            width: 200,
+            align: 'right',
+            headerAlign: 'right'
         },
         {
             field: 'total',
             headerName: 'Total',
-            width: 150,
+            width: 200,
             align: 'right',
+            headerAlign: 'right',
             renderCell: (params: GridCellParams) => <>{convertCurrent(params.row.total)}</>
         },
         {
             field: 'acoes',
             headerName: 'Ações',
-            width: 150,
+            width: 200,
+            align: 'center',
+            headerAlign: 'center',
             renderCell: (params: GridCellParams) => {
                 return <>
-                    <IconButton aria-label="edit" onClick={() => props.editCallback(params.row)}>
+                    <IconButton aria-label="edit" onClick={() => props?.editCallback && props.editCallback(params.row)}>
                         <EditBtn color="primary" />
                     </IconButton>
-                    <IconButton aria-label="delete" onClick={() => props.deleteCallback(params.row)}>
+                    <IconButton aria-label="delete" onClick={() => props?.deleteCallback && props.deleteCallback(params.row)}>
                         <DeleteBtn color="error" />
                     </IconButton>
                 </>

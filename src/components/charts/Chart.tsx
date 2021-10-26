@@ -16,9 +16,9 @@ export default function Chart(props: ChartProps) {
                 data={props?.data ?? []}
             >
                 <ArgumentAxis />
-                <ValueAxis />
+                <ValueAxis showLine={false} />
 
-                <LineSeries valueField="value" argumentField="argument" />
+                <LineSeries name="Transações" valueField="value" argumentField="argument" />
             </ChartMT>
         </Paper>
     )
