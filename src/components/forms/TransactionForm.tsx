@@ -62,7 +62,7 @@ export default function TransactionForm(props: TransactionFormProps) {
             quantity: formValues.quantidade,
             value_buy: formValues.cotacao
         }
-        const { id } = props.defaultValues
+        const id: any = props.defaultValues?.id
         await apiBtc[!!id ? 'put' : 'post'](`/transaction${!!id ? '/'+id: ''}`, dataToSave)
             .finally(() => {
                 if (handleLoading) {
@@ -75,9 +75,9 @@ export default function TransactionForm(props: TransactionFormProps) {
     useEffect(() => {
         if (Object.keys(props.defaultValues ?? {}).length > 0) {
             const transaction: TransactionValue = {
-                data: props?.defaultValues?.data.replace('.000Z', ''),
+                data: props?.defaultValues?.data ? props?.defaultValues?.data.replace('.000Z', '') : null,
                 cotacao: props?.defaultValues?.cotacao,
-                quantidade: props?.defaultValues?.total
+                quantidade: props?.defaultValues?.quantidade
             }            
             setFormValues(transaction)
         }
