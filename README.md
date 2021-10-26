@@ -44,11 +44,10 @@ $ npm install
 
 ```bash
 # para Yarn
-$ yarn start
+$ yarn dev
 
 # para NPM
-$ npm start
+$ npm dev
 ```
 
 Por padrão, a aplicação irá rodar na porta 3000.
-
