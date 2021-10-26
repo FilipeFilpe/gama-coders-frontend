@@ -1,3 +1,10 @@
+:root {
+  --bg-default: linear-gradient(46deg, #545454 30%, #adadad 90%);
+  --bg-primary: linear-gradient(46deg, #0e489f 30%, #0066ff 90%);
+  --bg-success: linear-gradient(45deg, #00b72f 30%, #b4ff3b 90%);;
+  --bg-warning: linear-gradient(45deg, #b39100 30%, #ffd627 90%);
+  --bg-error: linear-gradient(45deg, #971212 30%, #ff0000 90%);
+}
 html,
 body {
   padding: 0;
